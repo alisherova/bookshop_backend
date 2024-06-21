@@ -5,7 +5,7 @@ export const verifyToken = (req, res, next) => {
   if (!token) return res.status(401).json({ error: "Access denied" });
 
   try {
-    const verified = jwt.verify(token, "your secret key");
+    const verified = jwt.verify(token, "your-secret-key");
     req.user = verified;
     next();
   } catch (err) {

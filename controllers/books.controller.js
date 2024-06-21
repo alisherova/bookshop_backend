@@ -54,16 +54,20 @@ export const updateBook = async (req, res) => {
     const { id } = req.params;
     const data = req.body;
 
-    const updatedBook = await updateBookById({ errorid: id }, data);
-
+    const updatedBook = await updateBookById(id, data);
+    if (!updatedBook) {
+      return res.status(404).json({ message: "Book not found" });
+    }
     return res.status(200).json({
-      message: "updated successfully",
+      message: "Updated successfully",
       updatedBook,
     });
   } catch (error) {
-    if (err.name === "ValidationError") {
-      const errors = Object.values(err.errors).map((e) => e.message);
-      res.status(400).json({ error: errors });
-    } else handleErrorResponse(res, err);
+    if (error.name === "ValidationError") {
+      const errors = Object.values(error.errors).map((e) => e.message);
+      return res.status(400).json({ error: errors });
+    } else {
+      handleErrorResponse(res, error); // Use the correct variable
+    }
   }
 };

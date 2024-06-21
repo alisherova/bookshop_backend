@@ -37,7 +37,7 @@ export const loginUser = async (req, res) => {
         expiresIn: "3d",
       }
     );
-    res.status(200).json({ token });
+    res.status(200).json({ token, user });
   } catch (error) {
     handleErrorResponse(res, error);
   }

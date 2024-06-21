@@ -33,10 +33,14 @@ export const deleteBookById = async (bookId) => {
   }
 };
 
-export const updateBookById = async (bookId, bookData) => {
+export const updateBookById = async (id, data) => {
   try {
-    return BookModel.findOneAndUpdate(bookId, bookData);
-  } catch (err) {
-    throw err;
+    const updatedBook = await BookModel.findByIdAndUpdate(id, data, {
+      new: true,
+      runValidators: true,
+    }); 
+    return updatedBook;
+  } catch (error) {
+    throw error;
   }
 };
