@@ -13,18 +13,21 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: "https://alisherova.github.io/book-shop/",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 200,
-  })
-);
 
-app.options("*", cors());
-app.use("/books", booksRouter, cors());
-app.use("/auth", userRouter, cors());
+const corsOptions = {
+  origin: "https://alisherova.github.io",
+  methods: "GET,POST,PUT,DELETE,OPTIONS",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+app.options("*", cors(corsOptions));
+
+app.use("/books", booksRouter, cors(corsOptions));
+app.use("/auth", userRouter, cors(corsOptions));
 
 app.get("/api", (req, res) => {
   res.status(201).json({ message: "App is running" });
